@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using static Starlight.UI.BattleUICursor;
 using static Starlight.Words.WordData;
@@ -17,8 +18,12 @@ namespace Starlight.UI
         [SerializeField] Transform wordInventoryGroup;
 	   [SerializeField] Transform hammerGroup;
         [SerializeField] WordUI wordPrefab;
+        [SerializeField] Transitionable wordMenuTransition;
+        [SerializeField] Transitionable backgroundFadeTransition;
+        [SerializeField] CanvasGroup backgroundGroup;
+        [SerializeField] UnityEvent<CardData> onCardCreated;
 
-        [Space]
+	   [Space]
 
         [Header("Confirm Button")]
         [SerializeField] Button confirmButton;
@@ -128,12 +133,18 @@ namespace Starlight.UI
             if (cursorType == CursorType.Hammer)
             {
                 StartCoroutine(confirmButtonTransition.TransitionIn(confirmButtonTransitionTime));
-            }
-            else if (oldType == CursorType.Hammer)
+                StartCoroutine(wordMenuTransition.TransitionIn(confirmButtonTransitionTime));
+                StartCoroutine(backgroundFadeTransition.TransitionIn(confirmButtonTransitionTime / 2f));
+                backgroundGroup.blocksRaycasts = true;
+		  }
+		  else if (oldType == CursorType.Hammer)
             {
                 StartCoroutine(confirmButtonTransition.TransitionOut(confirmButtonTransitionTime));
-            }
-            OnHammerGroupUpdated();
+                StartCoroutine(wordMenuTransition.TransitionOut(confirmButtonTransitionTime));
+                StartCoroutine(backgroundFadeTransition.TransitionOut(confirmButtonTransitionTime / 2f));
+                backgroundGroup.blocksRaycasts = false;
+		  }
+		  OnHammerGroupUpdated();
 	   }
 
         public void OnHammerSideButtonPressed()
@@ -192,8 +203,7 @@ namespace Starlight.UI
                 hammerMenuWords.RemoveAt(i);
 		  }
 
-            //TODO: Do something with new card data created
-            print(newCard);
+            onCardCreated?.Invoke(newCard);
         }
 
 	   public void OnWordClicked(WordUI word)
