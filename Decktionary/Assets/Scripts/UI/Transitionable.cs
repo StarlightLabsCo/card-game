@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
 namespace Starlight.UI
@@ -12,6 +13,9 @@ namespace Starlight.UI
     {
 	   [SerializeField] bool inByDefault = true;
 	   protected RectTransform rectTransform;
+
+	   public UnityEvent onTransitionInFinished;
+	   public UnityEvent onTransitionOutFinished;
 
 	   private void Awake()
 	   {
