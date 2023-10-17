@@ -379,26 +379,14 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 47207127}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 396571402}
-        m_TargetAssemblyTypeName: Starlight.UI.BattleUICursor, Assembly-CSharp
-        m_MethodName: SwitchCursorTypeInt
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 396571403}
         m_TargetAssemblyTypeName: Starlight.UI.WordManager, Assembly-CSharp
-        m_MethodName: ForgeWords
+        m_MethodName: OnHammerSideButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -667,6 +655,9 @@ MonoBehaviour:
   confirmButton: {fileID: 47207126}
   confirmButtonTransition: {fileID: 47207129}
   confirmButtonTransitionTime: 0.25
+  confirmButtonContent: {fileID: 22611468}
+  confirmButtonContentSprite: {fileID: 21300000, guid: 2b8e64f41eb13c3469abd60f0b6ce670, type: 3}
+  cancelButtonContentSprite: {fileID: 21300000, guid: a6c75b46003d4eb469e94790d2f4daea, type: 3}
   tooltipGroup: {fileID: 1940664732}
   tooltipText: {fileID: 553746359}
   startingWordsFile: {fileID: 4900000, guid: bc62f0917c203d940a9318b2f382132a, type: 3}
@@ -795,10 +786,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.10536044
-    y: 0.10514787
-    width: 0.78866297
-    height: 0.788609
+    x: 0.10192666
+    y: 0.10165745
+    width: 0.7955252
+    height: 0.7955801
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34

@@ -13,15 +13,24 @@ namespace Starlight.UI
 {
     public class WordManager : SingletonBehaviour<WordManager>
     {
+        [Header("Words")]
         [SerializeField] Transform wordInventoryGroup;
-        [SerializeField] Transform hammerGroup;
+	   [SerializeField] Transform hammerGroup;
         [SerializeField] WordUI wordPrefab;
+
+        [Space]
+
+        [Header("Confirm Button")]
         [SerializeField] Button confirmButton;
 	   [SerializeField] Transitionable confirmButtonTransition;
 	   [SerializeField] float confirmButtonTransitionTime;
+        [SerializeField] Image confirmButtonContent;
+        [SerializeField] Sprite confirmButtonContentSprite;
+        [SerializeField] Sprite cancelButtonContentSprite;
 
 	   [Space]
 
+        [Header("Other")]
 	   [SerializeField] CanvasGroup tooltipGroup;
 	   [SerializeField] TMP_Text tooltipText;
 
@@ -37,6 +46,9 @@ namespace Starlight.UI
         List<WordUI> inventoryWords = new List<WordUI>();
         List<WordUI> hammerMenuWords = new List<WordUI>();
 	   WordUI hoveredWord;
+
+
+        bool CanCombine => hammerMenuWords.Count > 0 && hammerMenuWords.Find(x => x.Data.wordType == WordType.Noun);
 
 	   public float GetWordWeight(int length)
         {
@@ -108,24 +120,60 @@ namespace Starlight.UI
         private void OnHammerGroupUpdated()
         {
             //can combine if at least one noun
-            bool canCombine = hammerMenuWords.Count > 0 && hammerMenuWords.Find(x => x.Data.wordType == WordType.Noun);
-
-            confirmButton.interactable = canCombine;
-        }
+            confirmButtonContent.sprite = CanCombine ? confirmButtonContentSprite : cancelButtonContentSprite;
+	   }
 
 	   public void OnCursorChanged(CursorType cursorType, CursorType oldType)
         {
-            if(cursorType == CursorType.Hammer)
+            if (cursorType == CursorType.Hammer)
             {
                 StartCoroutine(confirmButtonTransition.TransitionIn(confirmButtonTransitionTime));
-		  } 
-            else if(oldType == CursorType.Hammer)
+            }
+            else if (oldType == CursorType.Hammer)
             {
-			 StartCoroutine(confirmButtonTransition.TransitionOut(confirmButtonTransitionTime));
-		  }
+                StartCoroutine(confirmButtonTransition.TransitionOut(confirmButtonTransitionTime));
+            }
+            OnHammerGroupUpdated();
 	   }
 
-        public void ForgeWords()
+        public void OnHammerSideButtonPressed()
+        {
+            if(CanCombine)
+            {
+                ForgeWords();
+            } 
+            else
+            {
+                CancelHammer();
+            }
+		  //close menu
+		  BattleUICursor.instance.SwitchCursorType(CursorType.None);
+	   }
+
+        public void SendToInventory(WordUI word)
+        {
+            hammerMenuWords.Remove(word);
+		  word.transform.SetParent(wordInventoryGroup);
+            inventoryWords.Add(word);
+	   }
+
+	   public void SendToHammerMenu(WordUI word)
+	   {
+            inventoryWords.Remove(word);
+		  word.transform.SetParent(hammerGroup);
+		  hammerMenuWords.Add(word);
+	   }
+
+        private void CancelHammer()
+        {
+            //send all words back to inventory
+            for (int i = hammerMenuWords.Count - 1; i >= 0; i--)
+            {
+                SendToInventory(hammerMenuWords[i]);
+            }
+        }
+
+	   private void ForgeWords()
         {
             //no words, do nothing
             if (hammerMenuWords.Count == 0) return;
@@ -154,20 +202,15 @@ namespace Starlight.UI
 
             if(word.transform.parent == wordInventoryGroup)
             {
-			 word.transform.SetParent(hammerGroup);
+                SendToHammerMenu(word);
                 if(word.Data.wordType == WordType.Adjective)
                 {
                     word.transform.SetSiblingIndex(0);
                 }
-
-                inventoryWords.Remove(word);
-                hammerMenuWords.Add(word);
 		  }
 		  else
             {
-			 word.transform.SetParent(wordInventoryGroup);
-                hammerMenuWords.Remove(word);
-                inventoryWords.Add(word);
+                SendToInventory(word);
 		  }
             OnHammerGroupUpdated();
         }
