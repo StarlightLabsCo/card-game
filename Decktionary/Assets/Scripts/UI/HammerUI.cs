@@ -22,6 +22,7 @@ namespace Starlight.UI
 
 	   public void OnCursorChanged(CursorType cursorType, CursorType oldType)
         {
+		  print($"Cursor changed: {oldType} to {cursorType}.");
 		  sizeTween?.Kill();
 
 		  if (cursorType == CursorType.Hammer)
