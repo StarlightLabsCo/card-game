@@ -10,6 +10,7 @@ namespace Starlight.UI
 {
     public class BattleUICursor : SingletonBehaviour<BattleUICursor>
     {
+	   public Canvas canvas;
 	   public CursorType CurrentCursorType { get; private set; }
 
 

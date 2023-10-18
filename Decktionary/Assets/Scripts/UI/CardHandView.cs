@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Starlight.UI
 {
-    public class CardsView : MonoBehaviour
+    public class CardHandView : MonoBehaviour
     {
         [SerializeField] RectTransform cardParent;
         [SerializeField] CardUI cardPrefab;
