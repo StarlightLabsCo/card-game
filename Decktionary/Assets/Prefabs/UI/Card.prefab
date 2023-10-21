@@ -588,6 +588,7 @@ GameObject:
   - component: {fileID: 908701991181945493}
   - component: {fileID: 3375440212371146564}
   - component: {fileID: 8209525646179984668}
+  - component: {fileID: 4371415989393665483}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -654,12 +655,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd010589b4252ff408fddfb1a02e1c7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  group: {fileID: 4371415989393665483}
   titleText: {fileID: 3912414767885963790}
   titleTextShadow: {fileID: 4240882880194310924}
   cardIcon: {fileID: 9181011892875280733}
   descriptionText: {fileID: 9121385287484947379}
-  scaleHeight: -2
-  scaleAreaHeight: 1.5
+  fadeAmount: 0.25
+  fadeDuration: 0.25
+  scaleHeight: -2.5
+  scaleAreaHeight: 1
   normalSize: {x: 1, y: 1}
   scaledSize: {x: 0.5, y: 0.5}
 --- !u!114 &8209525646179984668
@@ -707,6 +711,34 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 6
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3375440212371146564}
+          m_TargetAssemblyTypeName: Starlight.UI.CardUI, Assembly-CSharp
+          m_MethodName: OnDrop
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!225 &4371415989393665483
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6736470912849408281}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &9165320895576897424
 GameObject:
   m_ObjectHideFlags: 0

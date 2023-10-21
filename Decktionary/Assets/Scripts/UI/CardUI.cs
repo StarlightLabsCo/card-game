@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Starlight.Managers;
 using Starlight.Words;
 using System;
@@ -5,12 +6,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Starlight.UI
 {
     public class CardUI : MonoBehaviour
     {
+	   [SerializeField] CanvasGroup group;
 	   [SerializeField] TMP_Text titleText;
 	   [SerializeField] TMP_Text titleTextShadow;
 	   [Space]
@@ -20,6 +23,8 @@ namespace Starlight.UI
 
 	   [Space]
 	   [Header("Dragging")]
+	   [SerializeField] float fadeAmount;
+	   [SerializeField] float fadeDuration;
 	   [SerializeField] float scaleHeight;
 	   [SerializeField] float scaleAreaHeight;
 	   [SerializeField] Vector2 normalSize;
@@ -32,11 +37,17 @@ namespace Starlight.UI
 	   Vector2 dragOffset;
 	   Vector2 dragOffsetScaled;
 
+	   Tween fadeTween;
 
 	   public bool IsBeingDragged { get; private set; } = false;
-	   public event Action onPlaced;
 
+	   public CardSlot Slot { get; private set; }
 	   public CardData Data { get; private set; }
+
+	   public void SetSlot(CardSlot slot)
+	   {
+		  this.Slot = slot;
+	   }
 
 	   public void SetCardData(CardData data)
 	   {
@@ -68,28 +79,71 @@ namespace Starlight.UI
 
 	   public void OnStartDrag()
 	   {
+		  if (Slot)
+		  {
+			 var arrow = BattleUICursor.instance.cardMovementArrow;
+			 arrow.SetPointCount(2);
+			 arrow.SetPoint(1, (Vector2)transform.position);
+			 return;
+		  }
 		  IsBeingDragged = true;
 		  tmpParent = transform.parent;
 		  tmpSiblingIndex = transform.GetSiblingIndex();
 		  transform.SetParent(BattleUICursor.instance.canvas.transform);
 		  transform.SetSiblingIndex(transform.parent.childCount - 2);
 		  dragOffset = (Vector2)transform.position - GameCamera.instance.CursorPosWorld;
+
+		  //fade
+		  fadeTween = group.DOFade(fadeAmount, fadeDuration).SetUpdate(true);
+		  group.blocksRaycasts = false;
 	   }
 
 	   public void OnEndDrag()
 	   {
+		  //came from hand
 		  IsBeingDragged = false;
-		  transform.SetParent(tmpParent);
-		  transform.SetSiblingIndex(tmpSiblingIndex);
+		  //card has been placed if there's a slot
+		  bool placed = Slot;
+		  group.blocksRaycasts = true;
 		  //if on card spot, invoke onPlaced
-		  bool placed = false;
 		  if(placed)
 		  {
-			 onPlaced?.Invoke();
-		  } else
+			 //TODO: Do stuff?
+			 transform.localScale = scaledSize;
+			 OnPlaced(Slot);
+		  } 
+		  else
 		  {
+			 transform.SetParent(tmpParent);
+			 transform.SetSiblingIndex(tmpSiblingIndex);
 			 transform.localScale = normalSize;
+			 
+			 fadeTween?.Kill();
+			 group.alpha = 1f;
 		  }
+
+		  //fade
+		  fadeTween?.Kill();
+		  group.alpha = 1f;
+	   }
+
+	   /// <summary>
+	   /// Called when a card is placed on a slot.
+	   /// </summary>
+	   /// <param name="slot">The slot the card has been placed on.</param>
+	   public void OnPlaced(CardSlot slot) 
+	   {
+	   }
+
+
+	   /// <summary>
+	   /// Checks if this card can be placed on a given slot.
+	   /// </summary>
+	   /// <param name="slot">The slot the card is being placed on.</param>
+	   /// <returns>true if can be placed, otherwise false</returns>
+	   public bool CanBePlacedOn(CardSlot slot)
+	   {
+		  return true;
 	   }
     }
 }

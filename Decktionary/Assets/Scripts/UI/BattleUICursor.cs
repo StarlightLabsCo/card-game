@@ -18,6 +18,7 @@ namespace Starlight.UI
 	   [SerializeField] Image cursorModeImage;
 	   [SerializeField] Sprite normalSprite;
 	   [SerializeField] Sprite hammerSprite;
+	   public ArrowController cardMovementArrow;
 
 	   [Space]
 
