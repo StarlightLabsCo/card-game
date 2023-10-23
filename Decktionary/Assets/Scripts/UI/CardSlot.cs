@@ -9,6 +9,8 @@ namespace Starlight.UI
 {
     public class CardSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
     {
+	   public CardSlotTeam Team;
+
 	   [SerializeField] Image slotImage;
 	   [SerializeField] Color normalColor;
 	   [SerializeField] Color highlightedColor;
@@ -16,11 +18,16 @@ namespace Starlight.UI
 	   public bool IsHighlighted { get; private set; } = false;
 	   public CardUI Card { get; private set; }
 
+	   public IEnumerator ExecuteSlotTurn(CardSlot[,] slotGrid)
+	   {
+		  yield return Card.ExecuteCardTurn(slotGrid);
+	   }
+
 	   public void OnDrop(PointerEventData eventData)
 	   {
 		  var dragObj = eventData.pointerDrag;
 		  //stop if not a card being dragged
-		  if (!dragObj.TryGetComponent(out CardUI card)) return;
+		  if (!dragObj.TryGetComponent(out CardUI card) || !card.CanBePlacedOn(this)) return;
 		  BattleUICursor.instance.cardMovementArrow.gameObject.SetActive(false);
 		  SetHighlighted(false);
 		  card.SetSlot(this);
@@ -30,7 +37,7 @@ namespace Starlight.UI
 	   public void SetCard(CardUI card)
 	   {
 		  Card = card;
-
+		  if (!Card) return;
 		  //align to parent
 		  Card.transform.SetParent(transform);
 	   }

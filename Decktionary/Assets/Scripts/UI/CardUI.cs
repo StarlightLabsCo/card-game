@@ -20,6 +20,9 @@ namespace Starlight.UI
 	   [SerializeField] Image cardIcon;
 	   [Space]
 	   [SerializeField] TMP_Text descriptionText;
+	   [Space]
+	   [SerializeField] TMP_Text healthText;
+	   [SerializeField] TMP_Text damageText;
 
 	   [Space]
 	   [Header("Dragging")]
@@ -44,8 +47,10 @@ namespace Starlight.UI
 	   public CardSlot Slot { get; private set; }
 	   public CardData Data { get; private set; }
 
+
 	   public void SetSlot(CardSlot slot)
 	   {
+		  if (Slot) Slot.SetCard(null);
 		  this.Slot = slot;
 	   }
 
@@ -58,7 +63,22 @@ namespace Starlight.UI
 
 		  cardIcon.sprite = data.Icon;
 
+		  data.onHealthUpdated += UpdateHealthText;
+		  data.onDamageUpdated += UpdateDamageText;
+		  UpdateHealthText(data.Health);
+		  UpdateDamageText(data.Damage);
+
 		  Data = data;
+	   }
+
+	   void UpdateHealthText(int health)
+	   {
+		  healthText.text = health.ToString();
+	   }
+
+	   void UpdateDamageText(int damage)
+	   {
+		  damageText.text = damage.ToString();
 	   }
 
 	   private void Awake()
@@ -127,6 +147,13 @@ namespace Starlight.UI
 		  group.alpha = 1f;
 	   }
 
+	   public IEnumerator ExecuteCardTurn(CardSlot[,] slotGrid)
+	   {
+		  //TODO: Implement card turn actions
+		  print($"Card turn executed: {Data}");
+		  yield return null;
+	   }
+
 	   /// <summary>
 	   /// Called when a card is placed on a slot.
 	   /// </summary>
@@ -143,7 +170,7 @@ namespace Starlight.UI
 	   /// <returns>true if can be placed, otherwise false</returns>
 	   public bool CanBePlacedOn(CardSlot slot)
 	   {
-		  return true;
+		  return !slot.Card && (!this.Slot || slot.Team == this.Slot.Team);
 	   }
     }
 }

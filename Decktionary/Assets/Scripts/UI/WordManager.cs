@@ -18,7 +18,7 @@ namespace Starlight.UI
         [SerializeField] Transform wordInventoryGroup;
 	   [SerializeField] Transform hammerGroup;
         [SerializeField] WordUI wordPrefab;
-        [SerializeField] Transitionable wordMenuTransition;
+	   [SerializeField] Transitionable wordMenuTransition;
         [SerializeField] Transitionable backgroundFadeTransition;
         [SerializeField] CanvasGroup backgroundGroup;
         [SerializeField] UnityEvent<CardData> onCardCreated;
@@ -172,7 +172,14 @@ namespace Starlight.UI
 	   {
             inventoryWords.Remove(word);
 		  word.transform.SetParent(hammerGroup);
-		  hammerMenuWords.Add(word);
+            if(word.Data.wordType == WordType.Adjective)
+            {
+                hammerMenuWords.Insert(0, word);
+            } 
+            else
+            {
+		      hammerMenuWords.Add(word);
+            }
 	   }
 
         private void CancelHammer()

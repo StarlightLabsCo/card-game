@@ -1,7 +1,8 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class SingletonBehaviour<T> : MonoBehaviour where T : Component
+public class SingletonBehaviour<T> : SerializedMonoBehaviour where T : Component
 {
     private static T _instance;
 
