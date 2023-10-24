@@ -385,8 +385,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 396571403}
-        m_TargetAssemblyTypeName: Starlight.UI.WordManager, Assembly-CSharp
+      - m_Target: {fileID: 1648171050}
+        m_TargetAssemblyTypeName: Starlight.BattleMembers.PlayerBehaviour, Assembly-CSharp
         m_MethodName: OnHammerSideButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -774,8 +774,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 396571403}
-        m_TargetAssemblyTypeName: Starlight.UI.WordManager, Assembly-CSharp
+      - m_Target: {fileID: 1648171050}
+        m_TargetAssemblyTypeName: Starlight.BattleMembers.PlayerBehaviour, Assembly-CSharp
         m_MethodName: OnCursorChanged
         m_Mode: 0
         m_Arguments:
@@ -807,35 +807,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  wordInventoryGroup: {fileID: 1229009073}
-  hammerGroup: {fileID: 1429103341}
-  wordPrefab: {fileID: 111936674860891660, guid: 7880bed02274ac14188070723d5e8800, type: 3}
-  wordMenuTransition: {fileID: 1229009080}
-  backgroundFadeTransition: {fileID: 192952751}
-  backgroundGroup: {fileID: 192952750}
-  onCardCreated:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1661896882}
-        m_TargetAssemblyTypeName: Starlight.UI.CardsView, Assembly-CSharp
-        m_MethodName: AddCard
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  confirmButton: {fileID: 47207126}
-  confirmButtonTransition: {fileID: 47207129}
-  confirmButtonTransitionTime: 0.25
-  confirmButtonContent: {fileID: 22611468}
-  confirmButtonContentSprite: {fileID: 21300000, guid: 2b8e64f41eb13c3469abd60f0b6ce670, type: 3}
-  cancelButtonContentSprite: {fileID: 21300000, guid: a6c75b46003d4eb469e94790d2f4daea, type: 3}
-  tooltipGroup: {fileID: 1940664732}
-  tooltipText: {fileID: 553746359}
   startingWordsFile: {fileID: 4900000, guid: bc62f0917c203d940a9318b2f382132a, type: 3}
   allWords: []
   wordWeightOverLength:
@@ -974,8 +945,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2092138971}
-        m_TargetAssemblyTypeName: Starlight.Managers.TurnManager, Assembly-CSharp
+      - m_Target: {fileID: 1648171050}
+        m_TargetAssemblyTypeName: Starlight.BattleMembers.PlayerBehaviour, Assembly-CSharp
         m_MethodName: CompletePlayerTurn
         m_Mode: 1
         m_Arguments:
@@ -1038,6 +1009,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!1 &481198875 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3556038943795787968, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+  m_PrefabInstance: {fileID: 680584019}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1792,7 +1768,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3556038943795787968, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 803403282}
   m_SourcePrefab: {fileID: 100100000, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
 --- !u!224 &680584020 stripped
 RectTransform:
@@ -1963,6 +1942,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 739679295}
   m_CullTransparentMesh: 1
+--- !u!114 &803403282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 481198875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d6f21bab020e34799688c817fd6b73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &868237051
 GameObject:
   m_ObjectHideFlags: 0
@@ -2335,7 +2326,7 @@ GameObject:
   - component: {fileID: 1229009079}
   - component: {fileID: 1229009080}
   m_Layer: 5
-  m_Name: Background
+  m_Name: WordMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2736,6 +2727,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1461125651}
   m_CullTransparentMesh: 1
+--- !u!1 &1648171049 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3556038943795787968, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+  m_PrefabInstance: {fileID: 7207064471860117955}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1648171050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648171049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2a5f6c56962b9646a48e7fc0a4565ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerUIBase: {fileID: 868237051}
+  wordMenuTransition: {fileID: 1229009080}
+  backgroundFadeTransition: {fileID: 192952751}
+  backgroundGroup: {fileID: 192952750}
+  confirmButton: {fileID: 47207126}
+  confirmButtonTransition: {fileID: 47207129}
+  confirmButtonTransitionTime: 0.25
+  confirmButtonContent: {fileID: 22611468}
+  confirmButtonContentSprite: {fileID: 21300000, guid: 2b8e64f41eb13c3469abd60f0b6ce670, type: 3}
+  cancelButtonContentSprite: {fileID: 21300000, guid: a6c75b46003d4eb469e94790d2f4daea, type: 3}
+  wordInventoryGroup: {fileID: 1229009073}
+  hammerGroup: {fileID: 1429103341}
+  wordPrefab: {fileID: 111936674860891660, guid: 7880bed02274ac14188070723d5e8800, type: 3}
+  tooltipGroup: {fileID: 1940664732}
+  tooltipText: {fileID: 553746359}
+  onCardCreated:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1661896882}
+        m_TargetAssemblyTypeName: Starlight.UI.CardHandView, Assembly-CSharp
+        m_MethodName: AddCard
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  turnWords: 8
 --- !u!1 &1661896877
 GameObject:
   m_ObjectHideFlags: 0
@@ -2774,7 +2813,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 4, y: 4}
-  m_SizeDelta: {x: 504, y: 38}
+  m_SizeDelta: {x: 504, y: 14}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1661896879
 MonoBehaviour:
@@ -3462,7 +3501,9 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  playerUIBase: {fileID: 868237051}
+  battleMembers:
+  - {fileID: 803403282}
+  - {fileID: 1648171050}
 --- !u!1 &2109753479
 GameObject:
   m_ObjectHideFlags: 0
@@ -3638,7 +3679,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3556038943795787968, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1648171050}
   m_SourcePrefab: {fileID: 100100000, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
 --- !u!114 &7207064471860117956 stripped
 MonoBehaviour:

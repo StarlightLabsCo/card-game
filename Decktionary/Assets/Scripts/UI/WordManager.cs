@@ -3,6 +3,7 @@ using Starlight.Words;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,46 +15,13 @@ namespace Starlight.UI
 {
     public class WordManager : SingletonBehaviour<WordManager>
     {
-        [Header("Words")]
-        [SerializeField] Transform wordInventoryGroup;
-	   [SerializeField] Transform hammerGroup;
-        [SerializeField] WordUI wordPrefab;
-	   [SerializeField] Transitionable wordMenuTransition;
-        [SerializeField] Transitionable backgroundFadeTransition;
-        [SerializeField] CanvasGroup backgroundGroup;
-        [SerializeField] UnityEvent<CardData> onCardCreated;
-
-	   [Space]
-
-        [Header("Confirm Button")]
-        [SerializeField] Button confirmButton;
-	   [SerializeField] Transitionable confirmButtonTransition;
-	   [SerializeField] float confirmButtonTransitionTime;
-        [SerializeField] Image confirmButtonContent;
-        [SerializeField] Sprite confirmButtonContentSprite;
-        [SerializeField] Sprite cancelButtonContentSprite;
-
-	   [Space]
-
-        [Header("Other")]
-	   [SerializeField] CanvasGroup tooltipGroup;
-	   [SerializeField] TMP_Text tooltipText;
-
-        [Space]
-
         [SerializeField] TextAsset startingWordsFile;
-	   [SerializeField] WordData[] allWords;
+	   [HideInInspector] public WordData[] allWords;
 
         [Space]
 
         [SerializeField] AnimationCurve wordWeightOverLength;
 
-        List<WordUI> inventoryWords = new List<WordUI>();
-        List<WordUI> hammerMenuWords = new List<WordUI>();
-	   WordUI hoveredWord;
-
-
-        bool CanCombine => hammerMenuWords.Count > 0 && hammerMenuWords.Find(x => x.Data.wordType == WordType.Noun);
 
 	   public float GetWordWeight(int length)
         {
@@ -85,166 +53,37 @@ namespace Starlight.UI
 		  }
 	   }
 
-        public WordData RollRandomWordData()
+        public static WordData RollRandomWordData(IList<WordData> words)
         {
             //calculate total weight
             float totalWeight = 0f;
-            foreach(var word in allWords)
+            foreach(var word in words)
             {
 			 totalWeight += word.Weight;
 		  }
             float val = UnityEngine.Random.value;
             float targetRandWeight = val * totalWeight;
             float run = 0f;
-            for(int i = 0; i < allWords.Length; i++)
+            for(int i = 0; i < words.Count; i++)
             {
-                run += allWords[i].Weight;
+                run += words[i].Weight;
                 if(run >= targetRandWeight)
                 {
-                    return allWords[i];
+                    return words[i];
                 }
 		  }
             return null;
         }
 
-	   [Button]
-        /// <summary>
-        /// Generates a list of words for the turn based on the items the player has, weights and categories
-        /// </summary>
-        public void PopulateWordInventory(int num)
+
+        public CardData GenerateRandomCard(IList<WordData> words, int wordLength)
         {
-            for(int i = 0; i < num; i++)
+            var card = new CardData();
+            for(int i = 0; i < wordLength; i++)
             {
-                WordData wordData = RollRandomWordData();
-                var newWord = Instantiate(wordPrefab, wordInventoryGroup);
-                newWord.SetData(wordData);
-                inventoryWords.Add(newWord);
+                card.AppendWord(RollRandomWordData(words));
             }
+            return card;
         }
-
-        private void OnHammerGroupUpdated()
-        {
-            //can combine if at least one noun
-            confirmButtonContent.sprite = CanCombine ? confirmButtonContentSprite : cancelButtonContentSprite;
-	   }
-
-	   public void OnCursorChanged(CursorType cursorType, CursorType oldType)
-        {
-            if (cursorType == CursorType.Hammer)
-            {
-                StartCoroutine(confirmButtonTransition.TransitionIn(confirmButtonTransitionTime));
-                StartCoroutine(wordMenuTransition.TransitionIn(confirmButtonTransitionTime));
-                StartCoroutine(backgroundFadeTransition.TransitionIn(confirmButtonTransitionTime / 2f));
-                backgroundGroup.blocksRaycasts = true;
-		  }
-		  else if (oldType == CursorType.Hammer)
-            {
-                StartCoroutine(confirmButtonTransition.TransitionOut(confirmButtonTransitionTime));
-                StartCoroutine(wordMenuTransition.TransitionOut(confirmButtonTransitionTime));
-                StartCoroutine(backgroundFadeTransition.TransitionOut(confirmButtonTransitionTime / 2f));
-                backgroundGroup.blocksRaycasts = false;
-		  }
-		  OnHammerGroupUpdated();
-	   }
-
-        public void OnHammerSideButtonPressed()
-        {
-            if(CanCombine)
-            {
-                ForgeWords();
-            } 
-            else
-            {
-                CancelHammer();
-            }
-		  //close menu
-		  BattleUICursor.instance.SwitchCursorType(CursorType.None);
-	   }
-
-        public void SendToInventory(WordUI word)
-        {
-            hammerMenuWords.Remove(word);
-		  word.transform.SetParent(wordInventoryGroup);
-            inventoryWords.Add(word);
-	   }
-
-	   public void SendToHammerMenu(WordUI word)
-	   {
-            inventoryWords.Remove(word);
-		  word.transform.SetParent(hammerGroup);
-            if(word.Data.wordType == WordType.Adjective)
-            {
-                hammerMenuWords.Insert(0, word);
-            } 
-            else
-            {
-		      hammerMenuWords.Add(word);
-            }
-	   }
-
-        private void CancelHammer()
-        {
-            //send all words back to inventory
-            for (int i = hammerMenuWords.Count - 1; i >= 0; i--)
-            {
-                SendToInventory(hammerMenuWords[i]);
-            }
-        }
-
-	   private void ForgeWords()
-        {
-            //no words, do nothing
-            if (hammerMenuWords.Count == 0) return;
-
-            CardData newCard = new();
-
-            int i;
-            foreach(var word in hammerMenuWords)
-            {
-                newCard.AppendWord(word.Data);
-		  }
-
-		  for (i = hammerMenuWords.Count - 1; i >= 0; i--)
-            {
-                Destroy(hammerMenuWords[i].gameObject);
-                hammerMenuWords.RemoveAt(i);
-		  }
-
-            onCardCreated?.Invoke(newCard);
-        }
-
-	   public void OnWordClicked(WordUI word)
-        {
-            if (BattleUICursor.instance.CurrentCursorType != CursorType.Hammer) return;
-
-            if(word.transform.parent == wordInventoryGroup)
-            {
-                SendToHammerMenu(word);
-                if(word.Data.wordType == WordType.Adjective)
-                {
-                    word.transform.SetSiblingIndex(0);
-                }
-		  }
-		  else
-            {
-                SendToInventory(word);
-		  }
-            OnHammerGroupUpdated();
-        }
-
-        public void OnWordHovered(WordUI word)
-        {
-            hoveredWord = word;
-            tooltipGroup.alpha = 1f;
-            tooltipText.text = word.Data.description;
-	   }
-
-        public void OnWordUnhovered(WordUI word)
-        {
-            if(hoveredWord == word)
-            {
-			 tooltipGroup.alpha = 0f;
-		  }
-	   }
     }
 }

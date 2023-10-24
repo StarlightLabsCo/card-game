@@ -1,3 +1,4 @@
+using Starlight.BattleMembers;
 using Starlight.Words;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +9,8 @@ namespace Starlight.UI
 {
     public class WordUI : MonoBehaviour
     {
+	   [HideInInspector] public PlayerBehaviour playerBehaviour;
+
 	   [SerializeField] TMP_Text wordText;
 	   public WordData Data { get; private set; }
 
@@ -19,17 +22,17 @@ namespace Starlight.UI
 
         public void OnClicked()
         {
-             WordManager.instance.OnWordClicked(this);
+		  playerBehaviour.OnWordClicked(this);
         }
 
         public void OnHover()
         {
-		  WordManager.instance.OnWordHovered(this);
+		  playerBehaviour.OnWordHovered(this);
 	   }
 
 	   public void OnExitHover()
 	   {
-		  WordManager.instance.OnWordUnhovered(this);
+		  playerBehaviour.OnWordUnhovered(this);
 	   }
     }
 }
