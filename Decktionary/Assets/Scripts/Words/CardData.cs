@@ -29,6 +29,14 @@ namespace Starlight.Words
 	   public event Action<int> onHealthUpdated;
 	   public event Action<int> onDamageUpdated;
 
+
+	   public IEnumerator GenerateAIData()
+	   {
+		  yield return null; /* WAIT FOR RESPONSE WITH IMAGE */
+
+		  yield return null; /* WAIT FOR RESPONSE WITH DESCRIPTION */
+	   }
+
 	   public CardData()
 	   {
 		  words = new();

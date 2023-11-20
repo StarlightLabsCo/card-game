@@ -183,6 +183,12 @@ namespace Starlight.BattleMembers
 			 newCard.AppendWord(word.Data);
 		  }
 
+		  //TODO: 
+		  //1. disable buttons and functionality
+		  //2. wait for AI data
+		  // yield return newCard.GenerateAIData();
+		  //3. continue
+
 		  for (i = hammerMenuWords.Count - 1; i >= 0; i--)
 		  {
 			 Destroy(hammerMenuWords[i].gameObject);
