@@ -1,8 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateCardDetails = void 0;
+const sharp_1 = __importDefault(require("sharp"));
 const openai_1 = require("../services/openai");
-async function generateCardDetails(data) {
+async function generateCardDetails(ws, data) {
+    // -- Generate Card Details --
     const cardResponse = await openai_1.openai.chat.completions.create({
         messages: [
             {
@@ -19,19 +24,31 @@ async function generateCardDetails(data) {
             type: "json_object",
         },
     });
-    console.log(cardResponse);
-    console.log("-------------------");
-    console.log(cardResponse.choices[0].message.content);
     const cardData = JSON.parse(cardResponse.choices[0].message.content);
     const cardName = cardData.Words.map((word) => word.word).join(" ");
+    // -- Generate Card Image --
     const imageResponse = await openai_1.openai.images.generate({
         model: "dall-e-3",
-        prompt: `A vibrant & epic pixel art image of a ${cardName}, described as "${cardData.Description}". No text.`,
+        prompt: `A vibrant pixel art potrait of a ${cardName}, described as "${cardData.Description}". No text!`,
         quality: "hd",
         size: "1024x1024",
+        response_format: "b64_json",
     });
-    console.log(imageResponse);
-    console.log("-------------------");
-    console.log(imageResponse.data);
+    if (!imageResponse) {
+        console.error(imageResponse);
+        throw new Error("OpenAI image generation failed");
+    }
+    // Use Sharp to convert the image to JPG
+    const imageBuffer = Buffer.from(imageResponse.data[0].b64_json, "base64");
+    const convertedImageBuffer = await (0, sharp_1.default)(imageBuffer)
+        .toFormat("jpeg", { quality: 100 }) // Set highest quality for minimal loss
+        .toBuffer();
+    cardData.Icon = convertedImageBuffer.toString("base64");
+    // Debug: Save b64 string to .jpg file
+    const fs = require("fs");
+    fs.writeFileSync("./cardImage.jpg", convertedImageBuffer);
+    // End of debug
+    // -- Send back to client --
+    ws.send(JSON.stringify({ Type: "UpdateCardDetails", Data: cardData }));
 }
 exports.generateCardDetails = generateCardDetails;

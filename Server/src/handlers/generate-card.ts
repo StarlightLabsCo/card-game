@@ -1,4 +1,5 @@
 import { WebSocket } from "ws";
+import sharp from "sharp";
 import { openai } from "../services/openai";
 
 export async function generateCardDetails(ws: WebSocket, data: Object) {
@@ -31,15 +32,28 @@ export async function generateCardDetails(ws: WebSocket, data: Object) {
     // -- Generate Card Image --
     const imageResponse = await openai.images.generate({
         model: "dall-e-3",
-        prompt: `A vibrant pixel art potrait of a ${cardName}, described as "${cardData.Description}". No text.`,
+        prompt: `A vibrant pixel art potrait of a ${cardName}, described as "${cardData.Description}". No text!`,
         quality: "hd",
         size: "1024x1024",
         response_format: "b64_json",
     });
 
-    console.log(imageResponse);
-    console.log("-------------------");
-    console.log(imageResponse.data);
+    if (!imageResponse) {
+        console.error(imageResponse);
+        throw new Error("OpenAI image generation failed");
+    }
 
-    // TODO: -- Send back to client --
+    // Use Sharp to convert the image to JPG
+    const imageBuffer = Buffer.from(
+        imageResponse.data[0].b64_json as string,
+        "base64"
+    );
+    const convertedImageBuffer = await sharp(imageBuffer)
+        .toFormat("jpeg", { quality: 100 }) // Set highest quality for minimal loss
+        .toBuffer();
+
+    cardData.Icon = convertedImageBuffer.toString("base64");
+
+    // -- Send back to client --
+    ws.send(JSON.stringify({ Type: "UpdateCardDetails", Data: cardData }));
 }

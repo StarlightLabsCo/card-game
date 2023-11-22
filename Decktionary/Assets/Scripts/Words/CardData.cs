@@ -9,6 +9,8 @@ namespace Starlight.Words
 	[System.Serializable]
 	public class CardData
 	{
+		public string Id { get; private set; }
+
 		public List<WordData> Words;
 		public int WordCount => Words.Count;
 
@@ -22,18 +24,38 @@ namespace Starlight.Words
 		private const int WORD_HEALTH_INCREASE = 1;
 		private const int BASE_ATTACK_DAMAGE = 1;
 
+		public event Action<Sprite> onIconUpdated;
+		public event Action<string> onDescriptionUpdated;
 		public event Action<int> onHealthUpdated;
 		public event Action<int> onDamageUpdated;
 
+
 		public CardData(WordData[] words)
 		{
-			this.Words = new List<WordData>(words);
+			Id = Guid.NewGuid().ToString();
+			Words = new List<WordData>(words);
 
-			Health = this.Words.Count * WORD_HEALTH_INCREASE;
+			Health = Words.Count * WORD_HEALTH_INCREASE;
 
 			WebSocketClient.Instance.GenerateCardDetails(this);
 		}
 
+
+		// Icon
+		public void SetIcon(Sprite newIcon)
+		{
+			Icon = newIcon;
+			onIconUpdated?.Invoke(Icon);
+		}
+
+		// Description
+		public void SetDescription(string newDescription)
+		{
+			Description = newDescription;
+			onDescriptionUpdated?.Invoke(Description);
+		}
+
+		// Health
 		public void SetHealth(int newHealth)
 		{
 			Health = Mathf.Max(newHealth, 0);
@@ -43,6 +65,19 @@ namespace Starlight.Words
 		public void ChangeHealth(int change)
 		{
 			SetHealth(Health + change);
+		}
+
+		// Damage
+
+		public void SetDamage(int newDamage)
+		{
+			Damage = Mathf.Max(newDamage, 0);
+			onDamageUpdated?.Invoke(Damage);
+		}
+
+		public void ChangeDamage(int change)
+		{
+			SetDamage(Damage + change);
 		}
 
 		public string GetPrompt()

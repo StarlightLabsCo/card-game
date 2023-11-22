@@ -12,7 +12,7 @@ wss.on("connection", function connection(ws) {
         // TODO: eventually add types / runtime validation to this, as well as heartbeats and other websocket goodies, similar to bonfire
         const handler = handlers_1.handlers[Type];
         if (handler) {
-            handler(Data);
+            handler(ws, Data);
         }
         else {
             console.log("No handler found for type: %s", Type);
