@@ -1,3 +1,4 @@
+using Starlight.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace Starlight.Words
 
 			Health = Words.Count * WORD_HEALTH_INCREASE;
 
-			WebSocketClient.Instance.GenerateCardDetails(this);
+			CardManager.instance.GenerateCardDetails(this);
 		}
 
 

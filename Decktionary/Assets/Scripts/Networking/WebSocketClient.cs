@@ -4,35 +4,18 @@ using Newtonsoft.Json.Linq;
 using NativeWebSocket;
 using Starlight.Words;
 using System.Collections.Generic;
+using System;
+using Starlight.Managers;
 
-public class WebSocketClient : MonoBehaviour
+public class WebSocketClient : PersistentSingletonBehaviour<WebSocketClient>
 {
     public WebSocket websocket;
 
     public static WebSocketClient Instance { get; private set; }
 
-    // TODO: Eventually move to a card manager class
-    private Dictionary<string, CardData> cardDetails;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
     // Start is called before the first frame update
     async void Start()
     {
-        // Set up the card details dictionary - TODO: eventually move to a card manager class
-        cardDetails = new Dictionary<string, CardData>();
-
         // Set up the websocket
         websocket = new WebSocket("ws://localhost:3000");
 
@@ -75,37 +58,17 @@ public class WebSocketClient : MonoBehaviour
         await websocket.Connect();
     }
 
-    void Update()
-    {
-#if !UNITY_WEBGL || UNITY_EDITOR
-        websocket.DispatchMessageQueue();
-#endif
-    }
-
-    // TODO: eventually move to a card manager class
-    public void GenerateCardDetails(CardData cardData)
-    {
-        cardDetails.Add(cardData.Id, cardData);
-
-        var jsonObject = new JObject();
-        jsonObject["Type"] = "GenerateCardDetails";
-        jsonObject["Data"] = JObject.FromObject(cardData);
-
-        string message = jsonObject.ToString();
-        websocket.SendText(message);
-    }
-
     private void UpdateCardDetails(JObject cardData)
     {
-        var cardId = cardData["Id"].Value<string>();
-        var card = cardDetails[cardId];
+	   var cardId = cardData["Id"].Value<string>();
+	   var card = CardManager.instance.GetCardDetails(cardId);
 
-        var icon = ConvertBase64ToSprite(cardData["Icon"].Value<string>());
+	   var icon = ConvertBase64ToSprite(cardData["Icon"].Value<string>());
 
-        card.SetIcon(icon);
-        card.SetDescription(cardData["Description"].Value<string>());
-        card.SetHealth(cardData["Health"].Value<int>());
-        card.SetDamage(cardData["Damage"].Value<int>());
+	   card.SetIcon(icon);
+	   card.SetDescription(cardData["Description"].Value<string>());
+	   card.SetHealth(cardData["Health"].Value<int>());
+	   card.SetDamage(cardData["Damage"].Value<int>());
     }
 
     private Sprite ConvertBase64ToSprite(string base64String)
