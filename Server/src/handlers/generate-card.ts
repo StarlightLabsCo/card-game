@@ -3,6 +3,8 @@ import sharp from "sharp";
 import { openai } from "../services/openai";
 
 export async function generateCardDetails(ws: WebSocket, data: Object) {
+    console.log(`[${Date.now()}] generating card details...]`);
+
     // -- Generate Card Details --
     const cardResponse = await openai.chat.completions.create({
         messages: [
@@ -29,7 +31,11 @@ export async function generateCardDetails(ws: WebSocket, data: Object) {
         (word: any) => word.word as string
     ).join(" ");
 
+    console.log(`[${Date.now()}] generated card details for ${cardName}`);
+    console.log(cardData);
+
     // -- Generate Card Image --
+    console.log(`[${Date.now()}] generating card image...]`);
     const imageResponse = await openai.images.generate({
         model: "dall-e-3",
         prompt: `A vibrant pixel art potrait of a ${cardName}, described as "${cardData.Description}". No text!`,
