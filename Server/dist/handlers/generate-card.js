@@ -44,10 +44,6 @@ async function generateCardDetails(ws, data) {
         .toFormat("jpeg", { quality: 100 }) // Set highest quality for minimal loss
         .toBuffer();
     cardData.Icon = convertedImageBuffer.toString("base64");
-    // Debug: Save b64 string to .jpg file
-    // const fs = require("fs");
-    // fs.writeFileSync("./cardImage.jpg", convertedImageBuffer);
-    // End of debug
     // -- Send back to client --
     ws.send(JSON.stringify({ Type: "UpdateCardDetails", Data: cardData }));
 }

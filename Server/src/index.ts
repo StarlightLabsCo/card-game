@@ -1,6 +1,5 @@
 import { WebSocketServer } from "ws";
 import { handlers } from "./handlers";
-import "dotenv/config";
 
 const port = 3000;
 const wss = new WebSocketServer({ port });

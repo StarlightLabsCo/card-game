@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const ws_1 = require("ws");
 const handlers_1 = require("./handlers");
-require("dotenv/config");
 const port = 3000;
 const wss = new ws_1.WebSocketServer({ port });
 wss.on("connection", function connection(ws) {

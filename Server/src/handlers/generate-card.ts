@@ -53,13 +53,6 @@ export async function generateCardDetails(ws: WebSocket, data: Object) {
         .toBuffer();
 
     cardData.Icon = convertedImageBuffer.toString("base64");
-
-    // Debug: Save b64 string to .jpg file
-    // const fs = require("fs");
-
-    // fs.writeFileSync("./cardImage.jpg", convertedImageBuffer);
-    // End of debug
-
     // -- Send back to client --
 
     ws.send(JSON.stringify({ Type: "UpdateCardDetails", Data: cardData }));
