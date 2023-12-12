@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -9,6 +10,8 @@ namespace Starlight.UI
 {
     public class CardSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
     {
+	   [SerializeField] CardSlot nextSlot;
+	   [SerializeField] CardSlot attackSlot;
 	   public CardSlotTeam Team;
 
 	   [SerializeField] Image slotImage;
@@ -18,9 +21,37 @@ namespace Starlight.UI
 	   public bool IsHighlighted { get; private set; } = false;
 	   public CardUI Card { get; private set; }
 
-	   public IEnumerator ExecuteSlotTurn(CardSlot[,] slotGrid)
+	   public const float CARD_MOVE_DURATION = 0.25f;
+
+#if UNITY_EDITOR
+	   private void OnDrawGizmosSelected()
 	   {
-		  yield return Card.ExecuteCardTurn(slotGrid);
+		  if(nextSlot)
+		  {
+			 Handles.color = Color.green;
+			 Handles.Button(transform.position, Quaternion.LookRotation(transform.position.DirVecTo(nextSlot.transform.position)), Vector2.Distance(transform.position, nextSlot.transform.position), 1f, Handles.ArrowHandleCap);
+		  }
+
+		  if (attackSlot)
+		  {
+			 Handles.color = Color.red;
+			 Handles.Button(transform.position, Quaternion.LookRotation(transform.position.DirVecTo(attackSlot.transform.position)), Vector2.Distance(transform.position, attackSlot.transform.position), 1f, Handles.ArrowHandleCap);
+		  }
+	   }
+#endif
+
+	   public IEnumerator ExecuteSlotTurn(System.Random seededRandom, int turn)
+	   {
+		  if (!Card) yield break;
+		  if(nextSlot)
+		  {
+			 yield return Card.TransitionToSlot(nextSlot);
+			 yield break;
+		  }
+		  if(attackSlot)
+		  {
+			 yield return Card.ExecuteCardTurn(seededRandom, turn, attackSlot);
+		  }
 	   }
 
 	   public void OnDrop(PointerEventData eventData)
@@ -30,8 +61,7 @@ namespace Starlight.UI
 		  if (!dragObj.TryGetComponent(out CardUI card) || !card.CanBePlacedOn(this)) return;
 		  BattleUICursor.instance.cardMovementArrow.gameObject.SetActive(false);
 		  SetHighlighted(false);
-		  card.SetSlot(this);
-		  SetCard(card);
+		  card.StartCoroutine(card.TransitionToSlot(this));
 	   }
 
 	   public void SetCard(CardUI card)
@@ -39,7 +69,7 @@ namespace Starlight.UI
 		  Card = card;
 		  if (!Card) return;
 		  //align to parent
-		  Card.transform.SetParent(transform);
+		  Card.transform.SetParent(transform, true);
 	   }
 
 	   public void OnPointerEnter(PointerEventData eventData)

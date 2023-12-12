@@ -61,6 +61,12 @@ public class WebSocketClient : PersistentSingletonBehaviour<WebSocketClient>
     private void UpdateCardDetails(JObject cardData)
     {
 	   var cardId = cardData["Id"].Value<string>();
+
+        // if card has been removed from play (e.g. killed by an opponent),
+        // then there's no point in gathering and setting the received data
+        if (!CardManager.instance.CardExists(cardId)) return;
+
+
 	   var card = CardManager.instance.GetCardDetails(cardId);
 
 	   var icon = ConvertBase64ToSprite(cardData["Icon"].Value<string>());

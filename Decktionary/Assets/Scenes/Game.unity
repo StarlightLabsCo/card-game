@@ -1170,10 +1170,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
+    x: 0.098997496
+    y: 0.099109136
+    width: 0.802005
+    height: 0.8017818
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -1709,6 +1709,10 @@ PrefabInstance:
       propertyPath: Team
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 453729878579110235, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      propertyPath: nextSlot
+      value: 
+      objectReference: {fileID: 680584022}
     - target: {fileID: 976794605044700361, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -1765,6 +1769,10 @@ PrefabInstance:
       propertyPath: Team
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1160447618180004980, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      propertyPath: attackSlot
+      value: 
+      objectReference: {fileID: 7207064471860117958}
     - target: {fileID: 1838401408482353666, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1773,6 +1781,10 @@ PrefabInstance:
       propertyPath: Team
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3431918464618912631, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      propertyPath: attackSlot
+      value: 
+      objectReference: {fileID: 7207064471860117956}
     - target: {fileID: 3488098476916316206, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1793,6 +1805,10 @@ PrefabInstance:
       propertyPath: Team
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5204800869088518949, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      propertyPath: nextSlot
+      value: 
+      objectReference: {fileID: 680584024}
     - target: {fileID: 5689537365262964673, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1801,6 +1817,10 @@ PrefabInstance:
       propertyPath: Team
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5854086510778045592, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      propertyPath: attackSlot
+      value: 
+      objectReference: {fileID: 7207064471860117962}
     - target: {fileID: 6337552504887255164, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1809,14 +1829,26 @@ PrefabInstance:
       propertyPath: Team
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6520156052262398181, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      propertyPath: nextSlot
+      value: 
+      objectReference: {fileID: 680584028}
     - target: {fileID: 6697045454897676272, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
       propertyPath: Team
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6697045454897676272, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      propertyPath: attackSlot
+      value: 
+      objectReference: {fileID: 7207064471860117960}
     - target: {fileID: 7711584186674956767, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
       propertyPath: Team
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7711584186674956767, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      propertyPath: nextSlot
+      value: 
+      objectReference: {fileID: 680584026}
     - target: {fileID: 8416563913438300806, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -2010,6 +2042,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d6f21bab020e34799688c817fd6b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardSlots:
+  - {fileID: 680584028}
+  - {fileID: 680584026}
+  - {fileID: 680584024}
+  - {fileID: 680584022}
+  - {fileID: 680584027}
+  - {fileID: 680584025}
+  - {fileID: 680584023}
+  - {fileID: 680584021}
+  placementSlots:
+  - {fileID: 680584027}
+  - {fileID: 680584025}
+  - {fileID: 680584023}
+  - {fileID: 680584021}
+  data: {fileID: 11400000, guid: f90d864a5ce0a5345ad09271da11b198, type: 2}
+  cardPlacementDelay: 0.5
 --- !u!1 &824588414
 GameObject:
   m_ObjectHideFlags: 0
@@ -2048,6 +2096,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  cardPrefab: {fileID: 3375440212371146564, guid: be16dddd6b0040b419c33346a1aea048, type: 3}
 --- !u!4 &824588416
 Transform:
   m_ObjectHideFlags: 0
@@ -2460,7 +2509,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 4, y: -109.999985}
+  m_AnchoredPosition: {x: 4, y: -110}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1229009074
@@ -2853,6 +2902,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2a5f6c56962b9646a48e7fc0a4565ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardSlots:
+  - {fileID: 7207064471860117962}
+  - {fileID: 7207064471860117960}
+  - {fileID: 7207064471860117958}
+  - {fileID: 7207064471860117956}
+  - {fileID: 7207064471860117963}
+  - {fileID: 7207064471860117961}
+  - {fileID: 7207064471860117959}
+  - {fileID: 7207064471860117957}
   playerUIBase: {fileID: 868237051}
   wordMenuTransition: {fileID: 1229009080}
   backgroundFadeTransition: {fileID: 192952751}
@@ -2865,24 +2923,13 @@ MonoBehaviour:
   cancelButtonContentSprite: {fileID: 21300000, guid: a6c75b46003d4eb469e94790d2f4daea, type: 3}
   wordInventoryGroup: {fileID: 1229009073}
   hammerGroup: {fileID: 1429103341}
+  cardParent: {fileID: 627482001}
   wordPrefab: {fileID: 111936674860891660, guid: 7880bed02274ac14188070723d5e8800, type: 3}
   tooltipGroup: {fileID: 1940664732}
   tooltipText: {fileID: 553746359}
   onCardCreated:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1661896882}
-        m_TargetAssemblyTypeName: Starlight.UI.CardHandView, Assembly-CSharp
-        m_MethodName: AddCard
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   turnWords: 8
 --- !u!1 &1661896877
 GameObject:
@@ -2895,7 +2942,6 @@ GameObject:
   - component: {fileID: 1661896878}
   - component: {fileID: 1661896880}
   - component: {fileID: 1661896879}
-  - component: {fileID: 1661896882}
   m_Layer: 5
   m_Name: CardMenu
   m_TagString: Untagged
@@ -2962,20 +3008,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1661896877}
   m_CullTransparentMesh: 1
---- !u!114 &1661896882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1661896877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d30e2add2252f5c40a748dc21ef45c50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cardParent: {fileID: 627482001}
-  cardPrefab: {fileID: 3375440212371146564, guid: be16dddd6b0040b419c33346a1aea048, type: 3}
 --- !u!1 &1831961753
 GameObject:
   m_ObjectHideFlags: 0
@@ -3525,91 +3557,12 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects:
-    - {fileID: 7207064471860117963}
-    - {fileID: 7207064471860117961}
-    - {fileID: 7207064471860117959}
-    - {fileID: 7207064471860117957}
-    - {fileID: 7207064471860117962}
-    - {fileID: 7207064471860117960}
-    - {fileID: 7207064471860117958}
-    - {fileID: 7207064471860117956}
-    - {fileID: 680584028}
-    - {fileID: 680584026}
-    - {fileID: 680584024}
-    - {fileID: 680584022}
-    - {fileID: 680584027}
-    - {fileID: 680584025}
-    - {fileID: 680584023}
-    - {fileID: 680584021}
+    ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: slotGrid
-      Entry: 7
-      Data: 0|Starlight.UI.CardSlot[,], Assembly-CSharp
-    - Name: 
-      Entry: 12
-      Data: 16
-    - Name: ranks
-      Entry: 1
-      Data: 4|4
-    - Name: 
-      Entry: 10
-      Data: 0
-    - Name: 
-      Entry: 10
-      Data: 1
-    - Name: 
-      Entry: 10
-      Data: 2
-    - Name: 
-      Entry: 10
-      Data: 3
-    - Name: 
-      Entry: 10
-      Data: 4
-    - Name: 
-      Entry: 10
-      Data: 5
-    - Name: 
-      Entry: 10
-      Data: 6
-    - Name: 
-      Entry: 10
-      Data: 7
-    - Name: 
-      Entry: 10
-      Data: 8
-    - Name: 
-      Entry: 10
-      Data: 9
-    - Name: 
-      Entry: 10
-      Data: 10
-    - Name: 
-      Entry: 10
-      Data: 11
-    - Name: 
-      Entry: 10
-      Data: 12
-    - Name: 
-      Entry: 10
-      Data: 13
-    - Name: 
-      Entry: 10
-      Data: 14
-    - Name: 
-      Entry: 10
-      Data: 15
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
+    SerializationNodes: []
   battleMembers:
   - {fileID: 803403282}
   - {fileID: 1648171050}
@@ -3697,6 +3650,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2092138970}
     m_Modifications:
+    - target: {fileID: 453729878579110235, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      propertyPath: attackSlot
+      value: 
+      objectReference: {fileID: 680584022}
     - target: {fileID: 976794605044700361, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3781,11 +3738,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1160447618180004980, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      propertyPath: nextSlot
+      value: 
+      objectReference: {fileID: 7207064471860117958}
+    - target: {fileID: 3431918464618912631, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      propertyPath: nextSlot
+      value: 
+      objectReference: {fileID: 7207064471860117956}
     - target: {fileID: 3556038943795787968, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
       propertyPath: m_Name
       value: PlayerBoard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 5204800869088518949, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      propertyPath: attackSlot
+      value: 
+      objectReference: {fileID: 680584024}
+    - target: {fileID: 5854086510778045592, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      propertyPath: nextSlot
+      value: 
+      objectReference: {fileID: 7207064471860117962}
+    - target: {fileID: 6520156052262398181, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      propertyPath: attackSlot
+      value: 
+      objectReference: {fileID: 680584028}
+    - target: {fileID: 6697045454897676272, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      propertyPath: nextSlot
+      value: 
+      objectReference: {fileID: 7207064471860117960}
+    - target: {fileID: 7711584186674956767, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
+      propertyPath: attackSlot
+      value: 
+      objectReference: {fileID: 680584026}
+    m_RemovedComponents:
+    - {fileID: 8643519647590256721, guid: 9e028090b7f84e94c94f2f6baab03bad, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

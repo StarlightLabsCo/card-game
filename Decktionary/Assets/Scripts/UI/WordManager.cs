@@ -53,7 +53,7 @@ namespace Starlight.UI
             }
         }
 
-        public static WordData RollRandomWordData(IList<WordData> words)
+        public static WordData RollRandomWordData(IList<WordData> words, System.Random seededRandom = null)
         {
             //calculate total weight
             float totalWeight = 0f;
@@ -61,7 +61,8 @@ namespace Starlight.UI
             {
                 totalWeight += word.Weight;
             }
-            float val = UnityEngine.Random.value;
+            //use unity random if no seeded random, otherwise use seeded random
+            float val = seededRandom == null ? UnityEngine.Random.value : (float)seededRandom.NextDouble();
             float targetRandWeight = val * totalWeight;
             float run = 0f;
             for (int i = 0; i < words.Count; i++)

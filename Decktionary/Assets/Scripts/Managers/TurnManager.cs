@@ -12,36 +12,39 @@ namespace Starlight.Managers
     {
 	   [SerializeField] List<BattleMember> battleMembers = new List<BattleMember>();
 
-        [TableMatrix]
-        [SerializeField] CardSlot[,] slotGrid;
-
         public bool IsPlayerTurnOver { get; private set; } = false;
 
 
-	   public CardSlot GetCardSlot(int x, int y) => slotGrid[y, x];
-	   public CardUI GetCard(int x, int y) => GetCardSlot(x, y).Card;
-
 	   void Start()
         {
-            StartCoroutine(TurnCoroutine());
+		  StartTurns((int)DateTime.Now.Ticks);
         }
 
-        IEnumerator TurnCoroutine()
+	   [Button]
+	   public void StartTurns(int seed)
+	   {
+		  System.Random seededRandom = new(seed);
+		  StartCoroutine(TurnCoroutine(seededRandom, 0));
+	   }
+
+        IEnumerator TurnCoroutine(System.Random seededRandom, int turn)
         {
+		  //setup
 		  foreach(var member in battleMembers)
 		  {
-			 yield return member.ExecuteSetupTurn();
+			 yield return member.ExecuteSetupTurn(seededRandom, turn);
 		  }
 
-		  //DEPRECATED:
-		  //yield return PlaceEnemyCards();
-		  //yield return PlacePlayerCards();
-
-		  yield return ExecutePlayerTurn();
-		  yield return ExecuteEnemyTurn();
+		  //battle!
+		  foreach (var member in battleMembers)
+		  {
+			 yield return member.ExecuteCardsTurn(seededRandom, turn);
+		  }
 
 		  //TODO: Don't start next turn if the player is dead or all enemies are dead!
-		  StartCoroutine(TurnCoroutine());
+
+		  //loop
+		  StartCoroutine(TurnCoroutine(seededRandom, turn + 1));
         }
 
 	   /*IEnumerator PlaceEnemyCards()
@@ -63,7 +66,7 @@ namespace Starlight.Managers
 		  yield return new WaitUntil(() => IsPlayerTurnOver);
 	   }*/
 
-	   IEnumerator ExecuteTurnsForType(CardSlotTeam teamType)
+	   /*IEnumerator ExecuteTurnsForType(CardSlotTeam teamType)
 	   {
 		  //loop through all cards on field (left -> right, top -> bottom)
 		  for (int y = 0; y < slotGrid.GetLength(0); y++)
@@ -81,14 +84,14 @@ namespace Starlight.Managers
 		  yield return null;
 	   }
 
-	   IEnumerator ExecutePlayerTurn()
+	   IEnumerator ExecutePlayerCardsTurn()
 	   {
 		  yield return ExecuteTurnsForType(CardSlotTeam.Player);
 	   }
 
-	   IEnumerator ExecuteEnemyTurn()
+	   IEnumerator ExecuteEnemyCardsTurn()
 	   {
 		  yield return ExecuteTurnsForType(CardSlotTeam.Enemy);
-	   }
+	   }*/
     }
 }
